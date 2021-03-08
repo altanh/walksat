@@ -141,11 +141,12 @@ int WalkSAT::main()
     initialize_statistics();
     print_statistics_header();
 
-    // Uncomment this to get some random data
-    // for (uint32_t i = 0; i < RANDOM_INITS; ++i) {
-    //     init();
-    //     logTrace("TRACE_RANDOM");
-    // }
+#ifdef NEUROSAT_RANDOM_TRACE
+    for (uint32_t i = 0; i < RANDOM_INITS; ++i) {
+        init();
+        logTrace("TRACE_RANDOM");
+    }
+#endif
 
     while (!found_solution && numtry < numrun) {
         numtry++;
@@ -249,7 +250,9 @@ void WalkSAT::WalkSAT::flipvar(uint32_t toflip)
         }
     }
 
+#ifdef NEUROSAT_TRACE
     logTrace("TRACE");
+#endif
 }
 
 /************************************/
@@ -414,6 +417,18 @@ void WalkSAT::initprob()
             numoccurrence[lit.toInt()]++;
         }
     }
+
+#ifdef NEUROSAT_INPUT
+    printf("NEUROSAT INPUT %d %d\n", numvars, numclauses);
+    for (i = 0; i < numclauses; i++) {
+        for (j = 0; j < clsize[i]; ++j) {
+            Lit lit = clause[i][j];
+            uint32_t var = lit.var();
+            printf("%d %d\n", i, lit.sign() ? var + numvars : var);
+        }
+    }
+    printf("END\n");
+#endif
 }
 
 /************************************/

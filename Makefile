@@ -1,4 +1,4 @@
-CC = g++ -O3
+CC = g++ -O3 $(CCFLAGS)
 
 all:	walksat makewff makequeens
 
