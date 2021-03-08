@@ -1,3 +1,6 @@
+# https://arxiv.org/pdf/1903.04671.pdf
+# adapted from https://github.com/dselsam/neurocore-public/blob/master/python/neurosat.py
+
 import numpy as np
 import torch
 from torch import nn
@@ -110,11 +113,13 @@ class NeuroSAT(nn.Module):
 
 
 if __name__ == "__main__":
-    idxs = np.array([[0,0],[0,1],[0,2],[1,3],[1,4],[1,5]])
+    idxs = np.array([[0, 0], [0, 1], [0, 2], [1, 3], [1, 4], [1, 5]])
     n_vars = 3
     n_clauses = 2
     G = NeuroSAT.G_from_indices(idxs.T, n_clauses, n_vars * 2)
     model = NeuroSAT(NeuroSATConfig())
-    
+
     r = model(G)
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()

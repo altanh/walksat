@@ -18,7 +18,7 @@ if __name__ == "__main__":
     train_frac = 0.7
 
     for epoch in range(epochs):
-        for X_file in X_files[:int(len(X_files) * train_frac)]:
+        for X_file in X_files[: int(len(X_files) * train_frac)]:
             sgd.zero_grad()
 
             Y_file = DATA_DIR + "/Y_" + X_file.split("X_")[1]

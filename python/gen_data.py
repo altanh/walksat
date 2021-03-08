@@ -32,7 +32,7 @@ def parse_trace(trace_path):
                 continue
             elif line.startswith("NEUROSAT INPUT"):
                 assert state == "junk"
-                state = "input" 
+                state = "input"
                 _, _, num_vars, num_clauses = line.split(" ")
                 num_vars, num_clauses = int(num_vars), int(num_clauses)
                 continue
