@@ -80,6 +80,7 @@ THE SOFTWARE.
 #define MAXATTEMPT 10      /* max number of times to attempt to find a non-tabu variable to flip */
 #define denominator 100000 /* denominator used in fractions to represent probabilities */
 #define ONE_PERCENT 1000   /* ONE_PERCENT / denominator = 0.01 */
+#define RANDOM_INITS 32768
 
 using namespace CMSat;
 
@@ -108,6 +109,28 @@ static inline int MAX(int x, int y)
 /* Main                             */
 /************************************/
 
+void WalkSAT::logTrace(const char* header) const {
+    uint32_t i;
+    double satisfied = static_cast<double>(numclauses - numfalse) / static_cast<double>(numclauses);
+    printf("%s;%f;", header, satisfied);
+    for (i = 0; i < numvars; ++i) {
+        printf("%d", value(i).getValue());
+    }
+    printf(";");
+    for (i = 0; i < numclauses; ++i) {
+        bool bad = true;
+        for (uint32_t j = 0; j < clsize[i]; j++) {
+            Lit lit = clause[i][j];
+            if (value(lit) == l_True) {
+                bad = false;
+                break;
+            }
+        }
+        printf(bad ? "0" : "1");
+    }
+    printf("\n");
+}
+
 int WalkSAT::main()
 {
     seed = 0;
@@ -117,6 +140,12 @@ int WalkSAT::main()
     initprob();
     initialize_statistics();
     print_statistics_header();
+
+    // Uncomment this to get some random data
+    // for (uint32_t i = 0; i < RANDOM_INITS; ++i) {
+    //     init();
+    //     logTrace("TRACE_RANDOM");
+    // }
 
     while (!found_solution && numtry < numrun) {
         numtry++;
@@ -219,6 +248,8 @@ void WalkSAT::WalkSAT::flipvar(uint32_t toflip)
             }
         }
     }
+
+    logTrace("TRACE");
 }
 
 /************************************/

@@ -186,6 +186,8 @@ private:
     lbool value(const Lit l) const {
         return assigns[l.var()] ^ l.sign();
     }
+
+    void logTrace(const char* header) const;
 };
 
 }
